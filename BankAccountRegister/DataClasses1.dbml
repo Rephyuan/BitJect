@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="bitject" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=10.140.0.3;Initial Catalog=bitject;User ID=bitject" SettingsObjectName="BankAccountRegister.Properties.Settings" SettingsPropertyName="bitjectConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.bankAccount" Member="bankAccount">
+    <Type Name="bankAccount">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="parentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="bankId" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="bankBranchName" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="chinaMainRegionId" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="chinaSubRegionId" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="bankAccountNumber" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="currencyCode" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="amount" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="isChecked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="lastModifyDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="lastModifierId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="registerStatus" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

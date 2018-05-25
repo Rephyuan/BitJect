@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="bitject" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=10.140.0.3;Initial Catalog=bitject;User ID=bitject" SettingsObjectName="WithDrawalOrderRequest.Properties.Settings" SettingsPropertyName="bitjectConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.account" Member="account">
+    <Type Name="account">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberLevelId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberParentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="balance" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="frozenBalance" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.accountTransDetail" Member="accountTransDetail">
+    <Type Name="accountTransDetail">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="transferCateId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="accountIdFrom" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="accountIdTo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCodeFrom" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCodeTo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="amountFrom" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="amountTo" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="exDiff" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="fee" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="exRateWithDiff" Type="System.Decimal" DbType="Decimal(28,14) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateWithoutDiff" Type="System.Decimal" DbType="Decimal(28,14) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateFrom" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlopeFrom" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exInterceptFrom" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateTo" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlopeTo" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exInterceptTo" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="feeRatio" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="r8" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="r7" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="r1" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="amountFromExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="feeRatioInExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="feeRatioOutExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="exRateInExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="exRateOutExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.accountTrans" Member="accountTrans">
+    <Type Name="accountTrans">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="detailId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberLevelId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberParentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="accountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="transferCateId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="transferTypeId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="amountTypeId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="amount" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="balanceBefore" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="balanceAfter" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="frozenBalanceBefore" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="frozenBalanceAfter" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.withdrawalOrder" Member="withdrawalOrder">
+    <Type Name="withdrawalOrder">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="accountIdFrom" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="bankAccountIdTo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCodeFrom" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCodeTo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="amountFrom" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="amountTo" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="exDiff" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="fee" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="exRateWithDiff" Type="System.Decimal" DbType="Decimal(28,14) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateWithoutDiff" Type="System.Decimal" DbType="Decimal(28,14) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateFrom" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlopeFrom" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exInterceptFrom" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateTo" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlopeTo" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exInterceptTo" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="feeRatio" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="r8" Type="System.Decimal" DbType="Decimal(24,12)" CanBeNull="true" />
+      <Column Name="r7" Type="System.Decimal" DbType="Decimal(24,12)" CanBeNull="true" />
+      <Column Name="r1" Type="System.Decimal" DbType="Decimal(24,12)" CanBeNull="true" />
+      <Column Name="amountFromExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="feeRatioInExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="feeRatioOutExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="exRateInExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="exRateOutExternal" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="isApiCreate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="p8" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="p7" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="feeMode" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>
