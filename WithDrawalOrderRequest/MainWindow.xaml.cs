@@ -21,6 +21,7 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Net;
 using System.Transactions;
+using Model;
 
 namespace WithDrawalOrderRequest
 {
@@ -29,7 +30,13 @@ namespace WithDrawalOrderRequest
     /// </summary>
     public partial class MainWindow : Window
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["bitjectConnectionString"].ConnectionString);
+        SqlConnection conn = new SqlConnection(Model.Global.GlobalVar.sql_con_str_main);
+
+        Model.Global.GlobalFunc glbf = new Model.Global.GlobalFunc();
+
+        string transDetailInsert = "INSERT INTO [dbo].[accountTransDetail]([transferCateId],[accountIdFrom],[accountIdTo],[currencyCodeFrom],[currencyCodeTo],[amountFrom],[amountTo],[exDiff],[fee],[createDateTime],[exRateWithDiff],[exRateWithoutDiff],[exRateFrom],[exSlopeFrom],[exInterceptFrom],[exRateTo],[exSlopeTo],[exInterceptTo],[feeRatio],[r8],[r7],[r1],[amountFromExchange],[feeRatioInExchange],[feeRatioOutExchange],[exRateInExchange],[exRateOutExchange],[memo],[handlerId]) VALUES (@transferCateId,@accountIdFrom,@accountIdTo,@currencyCodeFrom,@currencyCodeTo,@amountFrom,@amountTo,@exDiff,@fee,@createDateTime,@exRateWithDiff,@exRateWithoutDiff,@exRateFrom,@exSlopeFrom,@exInterceptFrom,@exRateTo,@exSlopeTo,@exInterceptTo,@feeRatio,@r8,@r7,@r1,@amountFromExchange,@feeRatioInExchange,@feeRatioOutExchange,@exRateInExchange,@exRateOutExchange,@memo,@handlerId);select cast(scope_identity() as int)";
+
+        string transInsert = "INSERT INTO [dbo].[accountTrans]([detailId],[memberId],[memberLevelId],[memberParentId],[accountId],[transferCateId],[transferTypeId],[amountTypeId],[amount],[balanceBefore],[balanceAfter],[frozenBalanceBefore],[frozenBalanceAfter],[createDateTime],[l1],[l2],[l3],[l4],[l5],[l6],[l7],[l8],[l9]) VALUES (@detailId,@memberId,@memberLevelId,@memberParentId,@accountId,@transferCateId,@transferTypeId,@amountTypeId,@amount,@balanceBefore,@balanceAfter,@frozenBalanceBefore,@frozenBalanceAfter,@createDateTime,@l1,@l2,@l3,@l4,@l5,@l6,@l7,@l8,@l9)";
 
         public MainWindow()
         {
@@ -53,7 +60,7 @@ namespace WithDrawalOrderRequest
                     if (i.Count() > 0)
                     {
                         JObject request = new JObject();
-                        //var json = JsonConvert.SerializeObject(i);
+                        
                         JArray ja = JArray.FromObject(i.Select(x => new { withdrawalOrderId = x.id, memberId = x.memberId, bankAccountId = x.bankAccountIdTo, currencyCode = x.currencyCodeTo, amount = x.amountTo }));
 
                         JObject jo = JObject.FromObject(exRate);
@@ -63,84 +70,72 @@ namespace WithDrawalOrderRequest
 
                         string requestBody = JsonConvert.SerializeObject(request);
 
-                        byte[] requestBodyByte = Encoding.UTF8.GetBytes(requestBody);
-
                         Dispatcher.Invoke(() => { textblock_msg.Text = requestBody; });
 
-                        string memberRegisterUrl = "http://18.216.220.119/Project_prototype/public/api/getWithdraw";
+                        string getWithdrawalUrl = "http://18.216.220.119/api/getWithdraw";
 
-                        HttpWebRequest hwr = WebRequest.CreateHttp(memberRegisterUrl);
+                        JToken jtResult = glbf.GetHttpPostResponse(getWithdrawalUrl, requestBody);
 
-                        hwr.Method = WebRequestMethods.Http.Post;
+                        //Dispatcher.Invoke(() => { textblock_msg.Text = st; });
 
-                        using (Stream reqStream = hwr.GetRequestStream())
+                        string responseStatus = Convert.ToString(jtResult["status"]);
+
+                        string withdrawalStatus;
+
+                        if (responseStatus == "success")
                         {
-                            reqStream.Write(requestBodyByte, 0, requestBodyByte.Length);
-                        }
-
-                        using (WebResponse wr = hwr.GetResponse())
-                        {
-                            using (StreamReader sr = new StreamReader(wr.GetResponseStream(), Encoding.UTF8, true))
+                            foreach (var item in jtResult["data"])
                             {
-                                string st = sr.ReadToEnd();
+                                withdrawalStatus = Convert.ToString(item["status"]);
 
-                                JToken jt = JsonConvert.DeserializeObject<JObject>(st);
-
-                                Dispatcher.Invoke(() => { textblock_msg.Text = st; });
-
-                                if (jt["status"].ToString() == "success")
+                                if (withdrawalStatus == "success")
                                 {
-                                    foreach (var item in jt["data"])
+                                    int id = (int)item["withdrawalOrderId"];
+
+                                    var order = idic[id];
+
+                                    decimal p7 = (decimal)order.p7;
+
+                                    decimal p8 = (decimal)order.p8;
+
+                                    decimal amountFromExchange = (decimal)item["cost"]["cost"];
+
+                                    decimal feeRatioInExchange = (decimal)item["cost"]["deposit_fee"];
+
+                                    decimal feeRatioOutExchange = (decimal)item["cost"]["withdraw_fee"];
+
+                                    decimal exRateInExchange = (decimal)item["cost"]["deposit_rate"];
+
+                                    decimal exRateOutExchange = (decimal)item["cost"]["withdraw_rate"];
+
+                                    decimal r1 = (decimal)order.amountFrom - amountFromExchange;
+
+                                    decimal r7 = 0;
+
+                                    decimal r8 = 0;
+
+                                    if (order.feeMode == "1")
                                     {
-                                        if (item["status"].ToString() == "success")
-                                        {
-                                            int id = (int)item["withdrawalOrderId"];
-
-                                            var order = idic[id];
-
-                                            decimal p7 = (decimal)order.p7;
-
-                                            decimal p8 = (decimal)order.p8;
-
-                                            decimal amountFromExternal = (decimal)item["cost"]["cost"];
-
-                                            decimal feeRatioInExternal = (decimal)item["cost"]["deposit_fee"];
-
-                                            decimal feeRatioOutExternal = (decimal)item["cost"]["withdraw_fee"];
-
-                                            decimal exRateInExternal = (decimal)item["cost"]["deposit_rate"];
-
-                                            decimal exRateOutExternal = (decimal)item["cost"]["withdraw_rate"];
-
-                                            decimal r1 = (decimal)order.amountFrom - amountFromExternal;
-
-                                            decimal r7 = 0;
-
-                                            decimal r8 = 0;
-
-                                            if (order.feeMode == "1")
-                                            {
-                                                r7 = r1;
-                                                r8 = r7 * p7 / p8;
-                                            }
-                                            else if (order.feeMode == "2")
-                                            {
-                                                r7 = r1 * (1 - p7);
-                                                r8 = r1 * (1 - p8);
-                                            }
-                                            conn.Execute("update [bitject].[dbo].[withdrawalOrder] set status='2' , amountFromExternal=@amountFromExternal, feeRatioInExternal=@feeRatioInExternal , feeRatioOutExternal=@feeRatioOutExternal, exRateInExternal=@exRateInExternal,exRateOutExternal=@exRateOutExternal, r1=@r1,r7=@r7,r8=@r8 where id = @id", new { amountFromExternal = amountFromExternal, feeRatioInExternal = feeRatioInExternal, feeRatioOutExternal = feeRatioOutExternal, exRateInExternal = exRateInExternal, exRateOutExternal = exRateOutExternal, r1 = r1, r7 = r7, r8 = r8, id = id });
-                                        }
+                                        r7 = r1;
+                                        r8 = r7 * p7 / p8;
                                     }
+                                    else if (order.feeMode == "2")
+                                    {
+                                        r7 = r1 * (1 - p7);
+                                        r8 = r1 * (1 - p8);
+                                    }
+
+                                    conn.Execute("update [bitject].[dbo].[withdrawalOrder] set status='2' , amountFromExchange=@amountFromExchange, feeRatioInExchange=@feeRatioInExchange , feeRatioOutExchange=@feeRatioOutExchange, exRateInExchange=@exRateInExchange,exRateOutExchange=@exRateOutExchange, r1=@r1,r7=@r7,r8=@r8 where id = @id", new { amountFromExchange = amountFromExchange, feeRatioInExchange = feeRatioInExchange, feeRatioOutExchange = feeRatioOutExchange, exRateInExchange = exRateInExchange, exRateOutExchange = exRateOutExchange, r1 = r1, r7 = r7, r8 = r8, id = id });
                                 }
                             }
                         }
                     }
                     else
                     {
-                        Dispatcher.Invoke(() => { textblock_msg.Text = "There is no order needs to be processed."; });
+                        Dispatcher.Invoke(() => { textblock_msg.Text = "無新增訂單"; });
                     }
 
-                    var j = conn.Query("SELECT * FROM [bitject].[dbo].[withdrawalOrder] where status='2'");
+                    var j = conn.Query<withdrawalOrder>("SELECT * FROM [bitject].[dbo].[withdrawalOrder] where status='2'");
 
                     var jdic = j.ToDictionary(x => x.id);
 
@@ -152,42 +147,29 @@ namespace WithDrawalOrderRequest
 
                         byte[] requestBodyByte = Encoding.UTF8.GetBytes(requestBody);
 
-                        string memberRegisterUrl = "http://18.216.220.119/Project_prototype/public/api/getWithdrawRecords";
+                        string getWithdrawalStatusUrl = "http://18.216.220.119/api/getWithdrawRecords";
 
-                        HttpWebRequest hwr = WebRequest.CreateHttp(memberRegisterUrl);
+                        JToken jtResult = glbf.GetHttpPostResponse(getWithdrawalStatusUrl, requestBody);
 
-                        hwr.Method = WebRequestMethods.Http.Post;
+                        //Dispatcher.Invoke(() => { textblock_msg.Text = st; });
 
-                        using (Stream reqStream = hwr.GetRequestStream())
+                        string responseStatus = Convert.ToString(jtResult["status"]);
+
+                        string withdrawalStatus;
+
+                        if (responseStatus == "success")
                         {
-                            reqStream.Write(requestBodyByte, 0, requestBodyByte.Length);
-                        }
-
-                        using (WebResponse wr = hwr.GetResponse())
-                        {
-                            using (StreamReader sr = new StreamReader(wr.GetResponseStream(), Encoding.UTF8, true))
+                            foreach (var item in jtResult["data"])
                             {
-                                string st = sr.ReadToEnd();
+                                withdrawalStatus = Convert.ToString(item["status"]);
 
-                                JToken jt = JsonConvert.DeserializeObject<JObject>(st);
-
-                                Dispatcher.Invoke(() => { textblock_msg.Text = st; });
-
-                                if (jt["status"].ToString() == "success")
+                                if (withdrawalStatus == "failure")
                                 {
-                                    foreach (var item in jt["data"])
-                                    {
-                                        if (item["status"].ToString() == "success")
-                                        {
-                                            int id = (int)item["withdrawalOrderId"];
+                                    int id = (int)item["withdrawalOrderId"];
 
-                                            var order = (withdrawalOrder)idic[id];
+                                    var order = jdic[id];
 
-                                            Transaction(order);
-                                        }
-                                    }
-
-
+                                    Transfer(order);
                                 }
                             }
                         }
@@ -199,31 +181,27 @@ namespace WithDrawalOrderRequest
             { IsBackground = true }.Start();
         }
 
-        private void Transaction(withdrawalOrder wo)
+        private void Transfer(withdrawalOrder wo)
         {
             DateTime createDateTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
 
-            string transDetailInsert = "INSERT INTO [dbo].[accountTransDetail]([transferCateId],[accountIdFrom],[accountIdTo],[currencyCodeFrom],[currencyCodeTo],[amountFrom],[amountTo],[exDiff],[fee],[createDateTime],[exRateWithDiff],[exRateWithoutDiff],[exRateFrom],[exSlopeFrom],[exInterceptFrom],[exRateTo],[exSlopeTo],[exInterceptTo],[feeRatio],[r8],[r7],[r1],[amountFromExternal],[feeRatioInExternal],[feeRatioOutExternal],[exRateInExternal],[exRateOutExternal],[memo]) VALUES (@transferCateId,@accountIdFrom,@accountIdTo,@currencyCodeFrom,@currencyCodeTo,@amountFrom,@amountTo,@exDiff,@fee,@createDateTime,@exRateWithDiff,@exRateWithoutDiff,@exRateFrom,@exSlopeFrom,@exInterceptFrom,@exRateTo,@exSlopeTo,@exInterceptTo,@feeRatio,@r8,@r7,@r1,@amountFromExternal,@feeRatioInExternal,@feeRatioOutExternal,@exRateInExternal,@exRateOutExternal,@memo,);select cast(scope_identity() as int";
-
-            string transInsert = "INSERT INTO [dbo].[accountTrans]([detailId],[memberId],[memberLevelId],[memberParentId],[accountId],[transferCateId],[transferTypeId],[amountTypeId],[amount],[balanceBefore],[balanceAfter],[frozenBalanceBefore],[frozenBalanceAfter],[createDateTime],[l1],[l2],[l3],[l4],[l5],[l6],[l7],[l8],[l9]) VALUES (@detailId,@memberId,@memberLevelId,@memberParentId,@accountId,@transferCateId,@transferTypeId,@amountTypeId,@amount,@balanceBefore,@balanceAfter,@frozenBalanceBefore,@frozenBalanceAfter,@createDateTime,@l1,@l2,@l3,@l4,@l5,@l6,@l7,@l8,@l9)";
-
             using (var ts = new TransactionScope())
             {
-                try
-                {
+                //try
+                //{
                     int agentAccountId = GetAgentAccountId(wo.id);
 
                     List<int> accountIds = new List<int> { agentAccountId, wo.accountIdFrom };
 
-                    var accounts = conn.Query<account>("select * from [bitject].[dbo].[account] where id in @id", accountIds).ToDictionary(x => x.id);
+                    var accounts = conn.Query<account>("select * from [bitject].[dbo].[account] where id in @id", new { id = accountIds }).ToDictionary(x => x.id);
 
                     var agentAccount = accounts[agentAccountId];
 
                     var memberAccount = accounts[wo.accountIdFrom];
 
-                    #region apiCreate == trun 從 agent 帳戶扣款
+                    #region requestTypeId == "1" 從 agent 帳戶扣款
 
-                    if (wo.isApiCreate)
+                    if (wo.requestTypeId == "1")
                     {
                         accountTransDetail atd = new accountTransDetail()
                         {
@@ -249,15 +227,15 @@ namespace WithDrawalOrderRequest
                             exSlopeTo = 0M,
                             exInterceptTo = 0M,
                             feeRatio = 0M,
-                            amountFromExternal = null,
-                            feeRatioInExternal = null,
-                            feeRatioOutExternal = null,
-                            exRateInExternal = null,
-                            exRateOutExternal = null,
+                            amountFromExchange = null,
+                            feeRatioInExchange = null,
+                            feeRatioOutExchange = null,
+                            exRateInExchange = null,
+                            exRateOutExchange = null,
                             memo = null,
                         };
 
-                        int detailId = conn.Query<int>(transDetailInsert, atd).FirstOrDefault();
+                        int transDetailId = conn.Query<int>(transDetailInsert, atd).FirstOrDefault();
 
                         conn.Execute("update [bitject].[dbo].[account] set frozenBalance=@frozenBalance, balance=@balance where id=@id", new { frozenBalance = agentAccount.frozenBalance - wo.amountFrom, balance = agentAccount.balance - wo.amountFrom, id = agentAccountId });
 
@@ -266,7 +244,7 @@ namespace WithDrawalOrderRequest
                         // 交易紀錄 agentAccount balance
                         var agentBalance = new accountTrans()
                         {
-                            detailId = detailId,
+                            detailId = transDetailId,
                             memberId = agentAccount.memberId,
                             memberLevelId = agentAccount.memberLevelId,
                             memberParentId = agentAccount.memberParentId,
@@ -296,7 +274,7 @@ namespace WithDrawalOrderRequest
                         // 交易紀錄 agentAccount frozenBalance
                         var agentFrozenBalance = new accountTrans()
                         {
-                            detailId = detailId,
+                            detailId = wo.id,
                             memberId = agentAccount.memberId,
                             memberLevelId = agentAccount.memberLevelId,
                             memberParentId = agentAccount.memberParentId,
@@ -326,7 +304,7 @@ namespace WithDrawalOrderRequest
                         // 交易紀錄 memberAccount balance depoist
                         var memberBalanceDeposit = new accountTrans()
                         {
-                            detailId = detailId,
+                            detailId = transDetailId,
                             memberId = memberAccount.memberId,
                             memberLevelId = memberAccount.memberLevelId,
                             memberParentId = memberAccount.memberParentId,
@@ -355,8 +333,41 @@ namespace WithDrawalOrderRequest
 
                         memberAccount.balance = memberAccount.balance + wo.amountFrom;
                     }
+                    else if (wo.requestTypeId == "2")
+                    {
+                        conn.Execute("update [bitject].[dbo].[account] set frozenBalance-=@frozenBalance where id=@id", new { frozenBalance = wo.amountFrom, id = memberAccount.id });
 
-                    #endregion apiCreate == trun 從 agent 帳戶扣款
+                        var memberFrozenBalance = new accountTrans()
+                        {
+                            detailId = wo.id,
+                            memberId = memberAccount.memberId,
+                            memberLevelId = memberAccount.memberLevelId,
+                            memberParentId = memberAccount.memberParentId,
+                            accountId = memberAccount.id,
+                            transferCateId = "4", // ExternalWithdrawal
+                            transferTypeId = "2", // Withdrawal
+                            amount = wo.amountFrom,
+                            amountTypeId = "2", // FrozenBalance
+                            balanceBefore = memberAccount.balance,
+                            balanceAfter = memberAccount.balance,
+                            frozenBalanceBefore = memberAccount.frozenBalance,
+                            frozenBalanceAfter = memberAccount.frozenBalance - wo.amountFrom,
+                            createDateTime = createDateTime,
+                            l1 = memberAccount.l1,
+                            l2 = memberAccount.l2,
+                            l3 = memberAccount.l3,
+                            l4 = memberAccount.l4,
+                            l5 = memberAccount.l5,
+                            l6 = memberAccount.l6,
+                            l7 = memberAccount.l7,
+                            l8 = memberAccount.l8,
+                            l9 = memberAccount.l9,
+                        };
+
+                        conn.Execute(transInsert, memberFrozenBalance);
+                    }
+
+                    #endregion requestTypeId == "1" 從 agent 帳戶先扣款
 
                     accountTransDetail atdWithdrawal = new accountTransDetail()
                     {
@@ -382,21 +393,21 @@ namespace WithDrawalOrderRequest
                         exSlopeTo = wo.exSlopeTo,
                         exInterceptTo = wo.exInterceptTo,
                         feeRatio = wo.feeRatio,
-                        amountFromExternal = wo.amountFromExternal,
-                        feeRatioInExternal = wo.feeRatioInExternal,
-                        feeRatioOutExternal = wo.feeRatioOutExternal,
-                        exRateInExternal = wo.exRateInExternal,
-                        exRateOutExternal = wo.exRateOutExternal,
+                        amountFromExchange = wo.amountFromExchange,
+                        feeRatioInExchange = wo.feeRatioInExchange,
+                        feeRatioOutExchange = wo.feeRatioOutExchange,
+                        exRateInExchange = wo.exRateInExchange,
+                        exRateOutExchange = wo.exRateOutExchange,
                         memo = wo.memo,
                     };
 
-                    int detailIdWithdrawal = conn.Query<int>(transDetailInsert, atdWithdrawal).FirstOrDefault();
+                    int detailId = conn.Query<int>(transDetailInsert, atdWithdrawal).Single();
 
                     conn.Execute("update [bitject].[dbo].[account] set balance=@balance where id=@id", new { balance = memberAccount.balance - wo.amountFrom, id = wo.accountIdFrom });
 
                     var memberBalanceWithDrawal = new accountTrans()
                     {
-                        detailId = detailIdWithdrawal,
+                        detailId = detailId,
                         memberId = memberAccount.memberId,
                         memberLevelId = memberAccount.memberLevelId,
                         memberParentId = memberAccount.memberParentId,
@@ -423,19 +434,20 @@ namespace WithDrawalOrderRequest
 
                     conn.Execute(transInsert, memberBalanceWithDrawal);
 
-
                     conn.Execute("update [bitject].[dbo].[withdrawalOrder] set status='3' where id=@id", new { id = wo.id });
-                }
-                catch(Exception ex)
-                {
-                    Dispatcher.Invoke(() => { textblock_msg.Text = ex.Message; });
-                }
+
+                    ts.Complete();
+                //}
+                //catch (Exception ex)
+                //{
+                //    Dispatcher.Invoke(() => { textblock_msg.Text = ex.Message; });
+                //}
             }
         }
 
         private int GetAgentAccountId(int memberId)
         {
-            int agentAccountId = conn.Query<int>("select u.id from member t inner join account u on t.parentId = u.memberId where u.currencyCode='BJC' and t.id=@id ", memberId).FirstOrDefault();
+            int agentAccountId = conn.Query<int>("select u.id from member t inner join account u on t.parentId = u.memberId where u.currencyCode='BJC' and t.id=@id ",new {id = memberId }).FirstOrDefault();
             return agentAccountId;
         }
     }

@@ -1,0 +1,10 @@
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\Model.dll
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\Model.pdb
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\Dapper.dll
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\GlobalUtils.dll
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\Newtonsoft.Json.dll
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\Dapper.xml
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\GlobalUtils.pdb
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\Newtonsoft.Json.xml
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\obj\Debug\Model.dll
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\obj\Debug\Model.pdb

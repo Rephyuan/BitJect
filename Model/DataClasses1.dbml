@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="bitject" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=10.140.0.3;Initial Catalog=bitject;User ID=bitject" SettingsObjectName="Model.Properties.Settings" SettingsPropertyName="bitjectConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.account" Member="account">
+    <Type Name="account">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberLevelId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberParentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="balance" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="frozenBalance" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.withdrawalOrder" Member="withdrawalOrder">
+    <Type Name="withdrawalOrder">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="accountIdFrom" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="bankAccountIdTo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCodeFrom" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCodeTo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="amountFrom" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="amountTo" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="exDiff" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="fee" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="exRateWithDiff" Type="System.Decimal" DbType="Decimal(28,14) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateWithoutDiff" Type="System.Decimal" DbType="Decimal(28,14) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateFrom" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlopeFrom" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exInterceptFrom" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateTo" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlopeTo" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exInterceptTo" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="feeRatio" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="r8" Type="System.Decimal" DbType="Decimal(24,12)" CanBeNull="true" />
+      <Column Name="r7" Type="System.Decimal" DbType="Decimal(24,12)" CanBeNull="true" />
+      <Column Name="r1" Type="System.Decimal" DbType="Decimal(24,12)" CanBeNull="true" />
+      <Column Name="amountFromExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="feeRatioInExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="feeRatioOutExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="exRateInExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="exRateOutExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="isApiCreate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="p8" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="p7" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="feeMode" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="requestTypeId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.accountTrans" Member="accountTrans">
+    <Type Name="accountTrans">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="detailId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberLevelId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="memberParentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="accountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="transferCateId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="transferTypeId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="amountTypeId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="amount" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="balanceBefore" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="balanceAfter" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="frozenBalanceBefore" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="frozenBalanceAfter" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.accountTransDetail" Member="accountTransDetail">
+    <Type Name="accountTransDetail">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="transferCateId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="accountIdFrom" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="accountIdTo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCodeFrom" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="currencyCodeTo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="amountFrom" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="amountTo" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="exDiff" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="fee" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="exRateWithDiff" Type="System.Decimal" DbType="Decimal(28,14) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateWithoutDiff" Type="System.Decimal" DbType="Decimal(28,14) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateFrom" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlopeFrom" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exInterceptFrom" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="exRateTo" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlopeTo" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exInterceptTo" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="feeRatio" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="r8" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="r7" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="r1" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="amountFromExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="feeRatioInExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="feeRatioOutExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="exRateInExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="exRateOutExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="handlerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.announcement" Member="announcement">
+    <Type Name="announcement">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="agentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="agentLevelId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="typeId" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="isTop" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="lastModifierId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="lastModifyDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="effectiveBeginDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="effectiveEndDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.announcementText" Member="announcementText">
+    <Type Name="announcementText">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="announcementId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="lang" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="subject" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="text" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.bankAccount" Member="bankAccount">
+    <Type Name="bankAccount">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="parentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="bankId" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="bankBranchName" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="chinaMainRegionId" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="chinaSubRegionId" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="bankAccountNumber" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="currencyCode" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="amount" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="isChecked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="lastModifyDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="lastModifierId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="registerStatus" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.company" Member="company">
+    <Type Name="company">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="data" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="gmt" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="principalId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="rentPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="beginDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="endDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="url" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="apiKey" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="isMain" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="logoPath" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="principalLevelId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="templates" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.exchangeRate" Member="exchangeRate">
+    <Type Name="exchangeRate">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="currencyCode" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="exRate" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exSlope" Type="System.Decimal" DbType="Decimal(16,8) NOT NULL" CanBeNull="false" />
+      <Column Name="exIntercept" Type="System.Decimal" DbType="Decimal(24,12) NOT NULL" CanBeNull="false" />
+      <Column Name="lastModifyDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[log]" Member="log">
+    <Type Name="log">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="memberId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="targetId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="pageId" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="action" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="os" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="osVer" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="isWin64" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="browser" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="browserVer" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="device" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="ip" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="[desc]" Member="desc" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.member" Member="member">
+    <Type Name="member">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="levelId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="companyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="accountTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="parentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="isApiCreate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="externalId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="nickname" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="nationNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="phoneNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="childPid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="childCanViewId" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="loginCountryCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="loginDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="loginCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="loginFailCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="loginIp" Type="System.String" DbType="VarChar(39)" CanBeNull="true" />
+      <Column Name="personalId" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="nationCode" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="firstName" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="lastName" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="sex" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="birthday" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="creditCardInfo" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="auth" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="info" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="lastModifyDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="lastModifierId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="reviewStatus" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="industryId" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="feeMode" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="feeDividedOwnPercent" Type="System.Decimal" DbType="Decimal(8,4)" CanBeNull="true" />
+      <Column Name="feeStackedOwnPercent" Type="System.Decimal" DbType="Decimal(8,4)" CanBeNull="true" />
+      <Column Name="score" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="registerStatus" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.message" Member="message">
+    <Type Name="message">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="senderId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="receiverId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="subject" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="text" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="isRead" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="readDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="lastModifyDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="lastModifierId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l3" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l4" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l5" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l6" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

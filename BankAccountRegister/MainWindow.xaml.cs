@@ -28,7 +28,7 @@ namespace BankAccountRegister
     /// </summary>
     public partial class MainWindow : Window
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["bitjectConnectionString"].ConnectionString);
+        SqlConnection conn = new SqlConnection(Model.Global.GlobalVar.sql_con_str_main);
 
         public MainWindow()
         {
@@ -44,7 +44,7 @@ namespace BankAccountRegister
                 while (true)
                 {
                     var i = conn.Query("SELECT id bankAccountId , memberId, currencyCode , bankId bankName, case when currencyCode = 'TWD' then bankBranchName else chinaMainRegionId end branchName, isNull(chinaSubRegionId,'') subBranchName,bankAccountNumber FROM [dbo].[bankAccount] where registerStatus='1'").ToList();
-
+                    
                     if (i.Count > 0)
                     {
                         //var json = JsonConvert.SerializeObject(i);
@@ -56,9 +56,9 @@ namespace BankAccountRegister
 
                         Dispatcher.Invoke(() => { textblock_msg.Text = requestBody; });
 
-                        string memberRegisterUrl = "http://18.216.220.119/Project_prototype/public/api/setWithdrawBank";
+                        string memberRegisterUrl = "http://18.216.220.119/api/setWithdrawBank";
 
-                        HttpWebRequest hwr = HttpWebRequest.CreateHttp(memberRegisterUrl);
+                        HttpWebRequest hwr = WebRequest.CreateHttp(memberRegisterUrl);
 
                         hwr.Method = WebRequestMethods.Http.Post;
                         
@@ -109,9 +109,9 @@ namespace BankAccountRegister
 
                         byte[] requestBodyByte = Encoding.UTF8.GetBytes(requestBody);
 
-                        string memberRegisterUrl = "http://18.216.220.119/Project_prototype/public/api/getWithdrawBankRecords";
+                        string memberRegisterUrl = "http://18.216.220.119/api/getWithdrawBankRecords";
 
-                        HttpWebRequest hwr = HttpWebRequest.CreateHttp(memberRegisterUrl);
+                        HttpWebRequest hwr = WebRequest.CreateHttp(memberRegisterUrl);
 
                         hwr.Method = WebRequestMethods.Http.Post;
 

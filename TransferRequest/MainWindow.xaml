@@ -1,0 +1,17 @@
+﻿<Window x:Class="TransferRequest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TransferRequest"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="訊息 :"></TextBlock>
+                <TextBox Name="textblock_msg"></TextBox>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

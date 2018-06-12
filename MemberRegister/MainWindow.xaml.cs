@@ -29,11 +29,13 @@ namespace MemberRegister
     /// </summary>
     public partial class MainWindow : Window
     {
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["bitjectConnectionString"].ConnectionString);
+        SqlConnection conn = new SqlConnection(Model.Global.GlobalVar.sql_con_str_main);
 
-        string personal_id_md5 = ConfigurationManager.ConnectionStrings["personalIdMd5"].ConnectionString;
+        Model.Global.GlobalFunc glbf = new Model.Global.GlobalFunc();
 
-        string idCardImgPath = ConfigurationManager.ConnectionStrings["idCardImgPath"].ConnectionString;
+        Model.Member.Define memberDefine = new Model.Member.Define();
+
+        string personal_id_md5 = Model.Global.GlobalVar.personal_id_md5;
 
         public MainWindow()
         {
@@ -48,153 +50,113 @@ namespace MemberRegister
             {
                 while (true)
                 {
-                    var i = conn.Query("select id, email, firstName, lastName, personalId, nationNumber, phoneNumber, nationCode, sex, birthday from member where registerStatus='1'").ToList();
+                    #region memberStatus = pending
+
+                    var i = conn.Query("select id, email, firstName, lastName, personalId, nationNumber, phoneNumber, nationCode, sex, birthday from member where registerStatus=@registerStatus", new { registerStatus = Model.Member.Define.ExchangeRegisterStatus.Pending }).ToList();
 
                     if (i.Count > 0)
                     {
-                        //var json = JsonConvert.SerializeObject(i);
                         JArray ja = new JArray();
 
                         foreach (var item in i)
                         {
-                            var fs = new FileStream(GetIdCardImgPath(item.id), FileMode.Open);
-                            byte[] img = new byte[fs.Length];
-                            fs.Read(img, 0, img.Length);
-                            fs.Close();
+                            JToken jtReq = JObject.FromObject(item);
 
-                            var fsBackSide = new FileStream(GetIdCardImgPath(item.id, true), FileMode.Open);
-                            byte[] imgBackSide = new byte[fsBackSide.Length];
-                            fsBackSide.Read(imgBackSide, 0, imgBackSide.Length);
-                            fsBackSide.Close();
+                            jtReq["idCardImg"] = memberDefine.GetIdCardImgBase64(item.id);
+                            jtReq["idCardImgBackSide"] = memberDefine.GetIdCardImgBase64(item.id, true);
 
-
-                            JToken jt = JObject.FromObject(item);
-
-                            //jt["idCardImg"] = Convert.ToBase64String(img);
-                            //jt["idcardimgbackside"] = Convert.ToBase64String(imgBackSide);
-                            //Dispatcher.Invoke(()=> { textblock_msg.Text += item.id + " " + GetIdCardImgFileName(item.id,true) + "\r\n"; });
-                            //Dispatcher.Invoke(() => { textblock_msg.Text += item.Value.id + " " + File.Exists(GetIdCardImgPath(item.Value.id)) + GetIdCardImgPath(item.Value.id)+ "\r\n"; });
-                            ja.Add(jt);
+                            ja.Add(jtReq);
                         }
+
+                        string memberRegisterUrl = "http://18.216.220.119/api/getRegister";
 
                         string requestBody = JsonConvert.SerializeObject(ja);
 
-                        byte[] requestBodyByte = Encoding.UTF8.GetBytes(requestBody);
+                        JToken jtResult = glbf.GetHttpPostResponse(memberRegisterUrl, requestBody);
 
-                        //Dispatcher.Invoke(() => { textblock_msg.Text = requestBody; });
+                        string responseStatus = Convert.ToString(jtResult["status"]);
 
-                        string memberRegisterUrl = "http://18.216.220.119/Project_prototype/public/api/getRegister";
-
-                        HttpWebRequest hwr = HttpWebRequest.CreateHttp(memberRegisterUrl);
-
-                        hwr.Method = "POST";
-
-                        using (Stream reqStream = hwr.GetRequestStream())
+                        if (responseStatus == "success")
                         {
-                            reqStream.Write(requestBodyByte, 0, requestBodyByte.Length);
-                        }
+                            List<int> idList = new List<int>();
 
-                        using (WebResponse wr = hwr.GetResponse())
-                        {
-                            using (StreamReader sr = new StreamReader(wr.GetResponseStream(), Encoding.UTF8, true))
+                            int iTemp;
+
+                            string memberRegisterStatus;
+
+                            foreach (var item in jtResult["data"])
                             {
-                                string st = sr.ReadToEnd();
+                                memberRegisterStatus = Convert.ToString(item["status"]);
 
-                                JToken jt = JsonConvert.DeserializeObject<JObject>(st);
-
-                                Dispatcher.Invoke(() => { textblock_msg.Text = st; });
-
-                                if (jt["status"].ToString() == "success")
+                                if (memberRegisterStatus == "success")
                                 {
-                                    List<string> ids = new List<string>();
+                                    var s = int.TryParse(Convert.ToString(item["id"]), out iTemp);
 
-                                    foreach (var item in jt["data"])
-                                    {
-                                        if (item["status"].ToString() == "success")
-                                        {
-                                            ids.Add(item["id"].ToString());
-                                        }
-                                    }
-
-                                    conn.Execute("update [bitject].[dbo].[member] set registerStatus='2' where id in @id", new { id = ids });
+                                    if (s) idList.Add(iTemp);
                                 }
                             }
+
+                            conn.Execute("update [bitject].[dbo].[member] set registerStatus='2' where id in @id", new { id = idList });
                         }
                     }
                     else
                     {
-                        Dispatcher.Invoke(() => { textblock_msg.Text = "OK"; });
+                        Dispatcher.Invoke(() => { textblock_msg.Text = "無帳戶需註冊"; });
                     }
 
-                    var j = conn.Query("select id from member where registerStatus='2'").ToList();
+                    #endregion memberStatus = pending
+
+                    #region memberStatus = inQuere
+
+                    var j = conn.Query("select id from member where registerStatus=@registerStatus", new { registerStatus = Model.Member.Define.ExchangeRegisterStatus.InQueue }).ToList();
 
                     if (j.Count > 0)
                     {
                         JArray ja = JArray.FromObject(j);
 
+                        string queryRegisterUrl = "http://18.216.220.119/api/getRegisterRecords";
+
                         string requestBody = JsonConvert.SerializeObject(ja);
 
-                        byte[] requestBodyByte = Encoding.UTF8.GetBytes(requestBody);
+                        JToken jtResult = glbf.GetHttpPostResponse(queryRegisterUrl, requestBody);
 
-                        string memberRegisterUrl = "http://18.216.220.119/Project_prototype/public/api/getRegisterRecords";
+                        string responseStatus = Convert.ToString(jtResult["status"]);
+                        //Dispatcher.Invoke(() => { textblock_msg.Text = st; });
 
-                        HttpWebRequest hwr = HttpWebRequest.CreateHttp(memberRegisterUrl);
-
-                        hwr.Method = WebRequestMethods.Http.Post;
-
-                        using (Stream reqStream = hwr.GetRequestStream())
+                        if (responseStatus == "success")
                         {
-                            reqStream.Write(requestBodyByte, 0, requestBodyByte.Length);
-                        }
+                            List<int> idList = new List<int>();
 
-                        using (WebResponse wr = hwr.GetResponse())
-                        {
-                            using (StreamReader sr = new StreamReader(wr.GetResponseStream(), Encoding.UTF8, true))
+                            string memberRegisterStatus;
+
+                            int iTemp;
+
+                            foreach (var item in jtResult["data"])
                             {
-                                string st = sr.ReadToEnd();
+                                memberRegisterStatus = Convert.ToString(item["status"]);
 
-                                JToken jt = JsonConvert.DeserializeObject<JObject>(st);
-
-                                Dispatcher.Invoke(() => { textblock_msg.Text = st; });
-
-                                if (jt["status"].ToString() == "success")
+                                if (memberRegisterStatus == "success")
                                 {
-                                    List<string> ids = new List<string>();
+                                    var s = int.TryParse(Convert.ToString(item["id"]), out iTemp);
 
-                                    foreach (var item in jt["data"])
-                                    {
-                                        if (item["status"].ToString() == "success")
-                                        {
-                                            ids.Add(item["id"].ToString());
-                                        }
-                                    }
-
-                                    conn.Execute("update [bitject].[dbo].[member] set registerStatus='3' where id in @id", new { id = ids });
+                                    if (s) idList.Add(iTemp);
                                 }
                             }
+
+                            conn.Execute("update [bitject].[dbo].[member] set registerStatus=@registerStatus where id in @id", new { id = idList , registerStatus = Model.Member.Define.ExchangeRegisterStatus.Success });
                         }
                     }
+                    else
+                    {
+                        Dispatcher.Invoke(() => { textblock_msg.Text = "無隊列中帳戶"; });
+                    }
+
+                    #endregion memberStatus = inQuere
 
                     Thread.Sleep(10000);
                 }
             })
             { IsBackground = true }.Start();
-        }
-
-        public string GetIdCardImgFileName(int memberId, bool isBackSide = false)
-        {
-            Security security = new Security();
-
-            string filename = isBackSide ? "idCardBackSide" : "idCard";
-
-            filename += memberId + "##" + personal_id_md5;
-
-            return security.MD5Encrypt(filename) + ".jpg";
-        }
-
-        public string GetIdCardImgPath(int memberId, bool isBackSide = false)
-        {
-            return idCardImgPath + memberId + "\\" + GetIdCardImgFileName(memberId, isBackSide);
         }
     }
 }
