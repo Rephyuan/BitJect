@@ -127,9 +127,9 @@ namespace Model.Member
 
         public class ReviewStatus
         {
-            public const string Valid = "1";
-            public const string Invalid = "2";
-            public const string WaitForReview = "3";
+            public const string Valid = "3";
+            public const string Invalid = "1";
+            public const string WaitForReview = "2";
         }
 
         public static Dictionary<string, string> ChkedStatusLangMap = new Dictionary<string, string>

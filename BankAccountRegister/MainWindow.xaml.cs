@@ -30,6 +30,8 @@ namespace BankAccountRegister
     {
         SqlConnection conn = new SqlConnection(Model.Global.GlobalVar.sql_con_str_main);
 
+        Model.Account.Define accountDefine = new Model.Account.Define();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,12 +45,17 @@ namespace BankAccountRegister
             {
                 while (true)
                 {
-                    var i = conn.Query("SELECT id bankAccountId , memberId, currencyCode , bankId bankName, case when currencyCode = 'TWD' then bankBranchName else chinaMainRegionId end branchName, isNull(chinaSubRegionId,'') subBranchName,bankAccountNumber FROM [dbo].[bankAccount] where registerStatus='1'").ToList();
+                    var i = conn.Query("SELECT id bankAccountId , memberId, currencyCode , bankId bankName, case when currencyCode = 'TWD' then bankBranchName else chinaMainRegionId end branchName, isNull(chinaSubRegionId,'') subBranchName,bankAccountNumber FROM [dbo].[bankAccount] where registerStatus='1' and reviewStatus = '3'").ToList();
                     
                     if (i.Count > 0)
                     {
-                        //var json = JsonConvert.SerializeObject(i);
-                        //JArray ja = JArray.FromObject(i);
+                        foreach (var item in i)
+                        {
+                            int memberId = (int)item.memberId;
+                            int bankAccountId = (int)item.bankAccountId;
+                            string str = accountDefine.GetBankPassbookImgBase64(memberId, bankAccountId);
+                            item.bankPassbookImg = str;
+                        }
 
                         string requestBody = JsonConvert.SerializeObject(i);
 
@@ -103,6 +110,7 @@ namespace BankAccountRegister
 
                     if (j.Count > 0)
                     {
+                        DateTime registerDateTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
                         //JArray ja = JArray.FromObject(j);
 
                         string requestBody = JsonConvert.SerializeObject(j);
@@ -142,7 +150,7 @@ namespace BankAccountRegister
                                         }
                                     }
 
-                                    conn.Execute("update [bitject].[dbo].[bankAccount] set registerStatus='3' where id in @id", new { id = ids });
+                                    conn.Execute("update [bitject].[dbo].[bankAccount] set registerStatus='3' , registerDateTime=@registerDateTime where id in @id", new { id = ids, registerDateTime = registerDateTime });
                                 }
                             }
                         }

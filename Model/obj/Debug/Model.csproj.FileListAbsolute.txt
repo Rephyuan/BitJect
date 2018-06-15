@@ -8,3 +8,4 @@ C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\Gl
 C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\bin\Debug\Newtonsoft.Json.xml
 C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\obj\Debug\Model.dll
 C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\obj\Debug\Model.pdb
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache

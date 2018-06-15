@@ -52,7 +52,7 @@ namespace MemberRegister
                 {
                     #region memberStatus = pending
 
-                    var i = conn.Query("select id, email, firstName, lastName, personalId, nationNumber, phoneNumber, nationCode, sex, birthday from member where registerStatus=@registerStatus", new { registerStatus = Model.Member.Define.ExchangeRegisterStatus.Pending }).ToList();
+                    var i = conn.Query("select id, email, firstName, lastName, personalId, nationNumber, phoneNumber, nationCode, sex, birthday from member where registerStatus=@registerStatus and reviewStatus=@reviewStatus", new { registerStatus = Model.Member.Define.ExchangeRegisterStatus.Pending, reviewStatus = Model.Member.Define.ReviewStatus.Valid }).ToList();
 
                     if (i.Count > 0)
                     {
@@ -112,6 +112,8 @@ namespace MemberRegister
 
                     if (j.Count > 0)
                     {
+                        DateTime registerDateTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+
                         JArray ja = JArray.FromObject(j);
 
                         string queryRegisterUrl = "http://18.216.220.119/api/getRegisterRecords";
@@ -143,7 +145,7 @@ namespace MemberRegister
                                 }
                             }
 
-                            conn.Execute("update [bitject].[dbo].[member] set registerStatus=@registerStatus where id in @id", new { id = idList , registerStatus = Model.Member.Define.ExchangeRegisterStatus.Success });
+                            conn.Execute("update [bitject].[dbo].[member] set registerStatus=@registerStatus , registerDateTime=@registerDateTime where id in @id", new { id = idList , registerStatus = Model.Member.Define.ExchangeRegisterStatus.Success ,registerDateTime = registerDateTime});
                         }
                     }
                     else

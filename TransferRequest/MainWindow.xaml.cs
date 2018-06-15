@@ -37,7 +37,7 @@ namespace TransferRequest
     {
         SqlConnection conn = new SqlConnection(Model.Global.GlobalVar.sql_con_str_main);
 
-        string transDetailInsert = "INSERT INTO [dbo].[accountTransDetail]([transferCateId],[accountIdFrom],[accountIdTo],[currencyCodeFrom],[currencyCodeTo],[amountFrom],[amountTo],[exDiff],[fee],[createDateTime],[exRateWithDiff],[exRateWithoutDiff],[exRateFrom],[exSlopeFrom],[exInterceptFrom],[exRateTo],[exSlopeTo],[exInterceptTo],[feeRatio],[r8],[r7],[r1],[amountFromExchange],[feeRatioInExchange],[feeRatioOutExchange],[exRateInExchange],[exRateOutExchange],[memo],[handlerId]) VALUES (@transferCateId,@accountIdFrom,@accountIdTo,@currencyCodeFrom,@currencyCodeTo,@amountFrom,@amountTo,@exDiff,@fee,@createDateTime,@exRateWithDiff,@exRateWithoutDiff,@exRateFrom,@exSlopeFrom,@exInterceptFrom,@exRateTo,@exSlopeTo,@exInterceptTo,@feeRatio,@r8,@r7,@r1,@amountFromExchange,@feeRatioInExchange,@feeRatioOutExchange,@exRateInExchange,@exRateOutExchange,@memo,@handlerId);select cast(scope_identity() as int)";
+        string transDetailInsert = "INSERT INTO [dbo].[accountTransDetail]([transferCateId],[accountIdFrom],[accountIdTo],[currencyCodeFrom],[currencyCodeTo],[amountFrom],[amountTo],[exDiff],[fee],[createDateTime],[exRateWithDiff],[exRateWithoutDiff],[exRateFrom],[exSlopeFrom],[exInterceptFrom],[exRateTo],[exSlopeTo],[exInterceptTo],[feeRatio],[r8],[r7],[r1],[amountFromExchange],[feeRatioInExchange],[feeRatioOutExchange],[exRateInExchange],[exRateOutExchange],[memo],[handlerId],[handlerIp]) VALUES (@transferCateId,@accountIdFrom,@accountIdTo,@currencyCodeFrom,@currencyCodeTo,@amountFrom,@amountTo,@exDiff,@fee,@createDateTime,@exRateWithDiff,@exRateWithoutDiff,@exRateFrom,@exSlopeFrom,@exInterceptFrom,@exRateTo,@exSlopeTo,@exInterceptTo,@feeRatio,@r8,@r7,@r1,@amountFromExchange,@feeRatioInExchange,@feeRatioOutExchange,@exRateInExchange,@exRateOutExchange,@memo,@handlerId,@handlerIp);select cast(scope_identity() as int)";
 
         string transInsert = "INSERT INTO [dbo].[accountTrans]([detailId],[memberId],[memberLevelId],[memberParentId],[accountId],[transferCateId],[transferTypeId],[amountTypeId],[amount],[balanceBefore],[balanceAfter],[frozenBalanceBefore],[frozenBalanceAfter],[createDateTime],[l1],[l2],[l3],[l4],[l5],[l6],[l7],[l8],[l9]) VALUES (@detailId,@memberId,@memberLevelId,@memberParentId,@accountId,@transferCateId,@transferTypeId,@amountTypeId,@amount,@balanceBefore,@balanceAfter,@frozenBalanceBefore,@frozenBalanceAfter,@createDateTime,@l1,@l2,@l3,@l4,@l5,@l6,@l7,@l8,@l9)";
 
@@ -84,6 +84,7 @@ namespace TransferRequest
             JToken jt_result = new JObject();
             
             int handlerId = (int)jt_req["handlerId"];
+            string handlerIp = Convert.ToString(jt_req["handlerIp"]);
             string transferCateId = (string)jt_req["transferCateId"];
             int accountIdFrom = (int)jt_req["accountIdFrom"];
             int accountIdTo = (int)jt_req["accountIdTo"];
@@ -241,6 +242,7 @@ namespace TransferRequest
                         exRateInExchange = 0,
                         exRateOutExchange =0,
                         handlerId = handlerId,
+                        handlerIp = handlerIp,
                         memo = memo,
                     };
 

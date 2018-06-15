@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="bitject" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=10.140.0.3;Initial Catalog=bitject;User ID=bitject" SettingsObjectName="Model.Properties.Settings" SettingsPropertyName="bitjectConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=10.140.0.3;Initial Catalog=bitject;Persist Security Info=True;User ID=bitject" SettingsObjectName="Model.Properties.Settings" SettingsPropertyName="bitjectConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.account" Member="account">
     <Type Name="account">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -69,6 +69,9 @@
       <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="handlerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="handlerIp" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="exchangeHandlingDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.accountTrans" Member="accountTrans">
@@ -131,6 +134,7 @@
       <Column Name="exRateOutExchange" Type="System.Decimal" DbType="Decimal(28,12)" CanBeNull="true" />
       <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="handlerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="handlerIp" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.announcement" Member="announcement">
@@ -172,8 +176,8 @@
       <Column Name="bankAccountNumber" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
       <Column Name="currencyCode" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="amount" Type="System.Decimal" DbType="Decimal(28,12) NOT NULL" CanBeNull="false" />
-      <Column Name="status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="isChecked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="reviewStatus" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
       <Column Name="createDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="memo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="l1" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -188,6 +192,7 @@
       <Column Name="lastModifyDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="lastModifierId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="registerStatus" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="registerDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.company" Member="company">
@@ -308,6 +313,7 @@
       <Column Name="feeStackedOwnPercent" Type="System.Decimal" DbType="Decimal(8,4)" CanBeNull="true" />
       <Column Name="score" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="registerStatus" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="registerDateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.message" Member="message">

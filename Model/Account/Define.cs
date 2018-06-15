@@ -66,6 +66,20 @@ namespace Model.Account
             {BankAccountStatus.Invalid,"BANKACCOUNTSTATUS_" + BankAccountStatus.Invalid}
         };
 
+        public class BankAccountReviewStatus
+        {
+            public const string Invalid = "1";
+            public const string WaitForReview = "2";
+            public const string Valid = "3";
+        }
+
+        public static Dictionary<string, string> BankAccountReviewStatusLangMap = new Dictionary<string, string>
+        {
+            { BankAccountReviewStatus.Valid,"REVIEW_STATUS_" + BankAccountReviewStatus.Valid },
+            { BankAccountReviewStatus.Invalid,"REVIEW_STATUS_" + BankAccountReviewStatus.Invalid },
+            { BankAccountReviewStatus.WaitForReview,"REVIEW_STATUS_" + BankAccountReviewStatus.WaitForReview },
+        };
+
         public class TransferTypeIds
         {
             public const string Deposit = "1";
@@ -1845,12 +1859,21 @@ namespace Model.Account
         {
             Security security = new Security();
 
-            return security.MD5Encrypt("passbook" + bankAccountId + "##" + Model.Global.GlobalVar.personal_id_md5) + ".jpg";
+            return security.MD5Encrypt("passbookImg" + bankAccountId + "##" + Model.Global.GlobalVar.personal_id_md5) + ".jpg";
         }
 
         public string GetBankPassbookImgPath(int memberId, int bankAccountId)
         {
-            return "content/memberData/passbook/" + memberId + "/" + GetBankPassbookImgFileName(bankAccountId);
+            return Model.Global.GlobalVar.webDirPath + "content\\memberData\\passbookImg\\" + memberId + "\\" + GetBankPassbookImgFileName(bankAccountId);
+        }
+
+        public string GetBankPassbookImgBase64(int memberId, int bankAccountId)
+        {
+            string path = GetBankPassbookImgPath(memberId, bankAccountId);
+
+            string base64 = glbf.GetFileBase64(path);
+
+            return base64;
         }
 
         public decimal GetExRate(string currencyCodeFrom, string currencyCodeTo, bool withDiff = true)
@@ -1967,11 +1990,11 @@ namespace Model.Account
             return q_bankAccount.status;
         }
 
-        public bool GetBankAccountIsChecked(int bankAccountId)
+        public string GetBankAccountReviewStatus(int bankAccountId)
         {
             GetBankAccount(bankAccountId);
 
-            return q_bankAccount.isChecked;
+            return q_bankAccount.reviewStatus;
         }
 
         public string GetBankAccountCurrencyCode(int bankAccountId)

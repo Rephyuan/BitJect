@@ -69,7 +69,7 @@ namespace Model
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::Model.Properties.Settings.Default.bitjectConnectionString, mappingSource)
+				base(global::Model.Properties.Settings.Default.bitjectConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -783,6 +783,12 @@ namespace Model
 		
 		private System.Nullable<int> _l9;
 		
+		private int _handlerId;
+		
+		private string _handlerIp;
+		
+		private System.Nullable<System.DateTime> _exchangeHandlingDateTime;
+		
     #region 擴充性方法定義
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -875,6 +881,12 @@ namespace Model
     partial void Onl8Changed();
     partial void Onl9Changing(System.Nullable<int> value);
     partial void Onl9Changed();
+    partial void OnhandlerIdChanging(int value);
+    partial void OnhandlerIdChanged();
+    partial void OnhandlerIpChanging(string value);
+    partial void OnhandlerIpChanged();
+    partial void OnexchangeHandlingDateTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnexchangeHandlingDateTimeChanged();
     #endregion
 		
 		public withdrawalOrder()
@@ -1762,6 +1774,66 @@ namespace Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_handlerId", DbType="Int NOT NULL")]
+		public int handlerId
+		{
+			get
+			{
+				return this._handlerId;
+			}
+			set
+			{
+				if ((this._handlerId != value))
+				{
+					this.OnhandlerIdChanging(value);
+					this.SendPropertyChanging();
+					this._handlerId = value;
+					this.SendPropertyChanged("handlerId");
+					this.OnhandlerIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_handlerIp", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string handlerIp
+		{
+			get
+			{
+				return this._handlerIp;
+			}
+			set
+			{
+				if ((this._handlerIp != value))
+				{
+					this.OnhandlerIpChanging(value);
+					this.SendPropertyChanging();
+					this._handlerIp = value;
+					this.SendPropertyChanged("handlerIp");
+					this.OnhandlerIpChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_exchangeHandlingDateTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> exchangeHandlingDateTime
+		{
+			get
+			{
+				return this._exchangeHandlingDateTime;
+			}
+			set
+			{
+				if ((this._exchangeHandlingDateTime != value))
+				{
+					this.OnexchangeHandlingDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._exchangeHandlingDateTime = value;
+					this.SendPropertyChanged("exchangeHandlingDateTime");
+					this.OnexchangeHandlingDateTimeChanged();
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -2463,6 +2535,8 @@ namespace Model
 		
 		private int _handlerId;
 		
+		private string _handlerIp;
+		
     #region 擴充性方法定義
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2527,6 +2601,8 @@ namespace Model
     partial void OnmemoChanged();
     partial void OnhandlerIdChanging(int value);
     partial void OnhandlerIdChanged();
+    partial void OnhandlerIpChanging(string value);
+    partial void OnhandlerIpChanged();
     #endregion
 		
 		public accountTransDetail()
@@ -3134,6 +3210,26 @@ namespace Model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_handlerIp", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string handlerIp
+		{
+			get
+			{
+				return this._handlerIp;
+			}
+			set
+			{
+				if ((this._handlerIp != value))
+				{
+					this.OnhandlerIpChanging(value);
+					this.SendPropertyChanging();
+					this._handlerIp = value;
+					this.SendPropertyChanged("handlerIp");
+					this.OnhandlerIpChanged();
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3715,7 +3811,7 @@ namespace Model
 		
 		private string _status;
 		
-		private bool _isChecked;
+		private string _reviewStatus;
 		
 		private System.DateTime _createDateTime;
 		
@@ -3745,6 +3841,8 @@ namespace Model
 		
 		private string _registerStatus;
 		
+		private System.Nullable<System.DateTime> _registerDateTime;
+		
     #region 擴充性方法定義
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -3771,8 +3869,8 @@ namespace Model
     partial void OnamountChanged();
     partial void OnstatusChanging(string value);
     partial void OnstatusChanged();
-    partial void OnisCheckedChanging(bool value);
-    partial void OnisCheckedChanged();
+    partial void OnreviewStatusChanging(string value);
+    partial void OnreviewStatusChanged();
     partial void OncreateDateTimeChanging(System.DateTime value);
     partial void OncreateDateTimeChanged();
     partial void OnmemoChanging(string value);
@@ -3801,6 +3899,8 @@ namespace Model
     partial void OnlastModifierIdChanged();
     partial void OnregisterStatusChanging(string value);
     partial void OnregisterStatusChanged();
+    partial void OnregisterDateTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnregisterDateTimeChanged();
     #endregion
 		
 		public bankAccount()
@@ -4008,7 +4108,7 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="VarChar(5) NOT NULL", CanBeNull=false)]
 		public string status
 		{
 			get
@@ -4028,22 +4128,22 @@ namespace Model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isChecked", DbType="Bit NOT NULL")]
-		public bool isChecked
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reviewStatus", DbType="VarChar(5) NOT NULL", CanBeNull=false)]
+		public string reviewStatus
 		{
 			get
 			{
-				return this._isChecked;
+				return this._reviewStatus;
 			}
 			set
 			{
-				if ((this._isChecked != value))
+				if ((this._reviewStatus != value))
 				{
-					this.OnisCheckedChanging(value);
+					this.OnreviewStatusChanging(value);
 					this.SendPropertyChanging();
-					this._isChecked = value;
-					this.SendPropertyChanged("isChecked");
-					this.OnisCheckedChanged();
+					this._reviewStatus = value;
+					this.SendPropertyChanged("reviewStatus");
+					this.OnreviewStatusChanged();
 				}
 			}
 		}
@@ -4324,6 +4424,26 @@ namespace Model
 					this._registerStatus = value;
 					this.SendPropertyChanged("registerStatus");
 					this.OnregisterStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_registerDateTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> registerDateTime
+		{
+			get
+			{
+				return this._registerDateTime;
+			}
+			set
+			{
+				if ((this._registerDateTime != value))
+				{
+					this.OnregisterDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._registerDateTime = value;
+					this.SendPropertyChanged("registerDateTime");
+					this.OnregisterDateTimeChanged();
 				}
 			}
 		}
@@ -5865,6 +5985,8 @@ namespace Model
 		
 		private string _registerStatus;
 		
+		private System.Nullable<System.DateTime> _registerDateTime;
+		
     #region 擴充性方法定義
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -5969,6 +6091,8 @@ namespace Model
     partial void OnscoreChanged();
     partial void OnregisterStatusChanging(string value);
     partial void OnregisterStatusChanged();
+    partial void OnregisterDateTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnregisterDateTimeChanged();
     #endregion
 		
 		public member()
@@ -6972,6 +7096,26 @@ namespace Model
 					this._registerStatus = value;
 					this.SendPropertyChanged("registerStatus");
 					this.OnregisterStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_registerDateTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> registerDateTime
+		{
+			get
+			{
+				return this._registerDateTime;
+			}
+			set
+			{
+				if ((this._registerDateTime != value))
+				{
+					this.OnregisterDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._registerDateTime = value;
+					this.SendPropertyChanged("registerDateTime");
+					this.OnregisterDateTimeChanged();
 				}
 			}
 		}

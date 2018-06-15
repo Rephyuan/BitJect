@@ -39,3 +39,4 @@ C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\MemberRegister\obj
 C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\MemberRegister\obj\Debug\MemberRegister.csproj.GenerateResource.Cache
 C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\MemberRegister\obj\Debug\MemberRegister.exe
 C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\MemberRegister\obj\Debug\MemberRegister.pdb
+C:\Users\liaouw\Documents\Visual Studio 2015\Projects\BitJect\MemberRegister\bin\Debug\MemberRegister.exe.config

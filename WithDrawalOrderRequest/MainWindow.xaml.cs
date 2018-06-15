@@ -34,7 +34,7 @@ namespace WithDrawalOrderRequest
 
         Model.Global.GlobalFunc glbf = new Model.Global.GlobalFunc();
 
-        string transDetailInsert = "INSERT INTO [dbo].[accountTransDetail]([transferCateId],[accountIdFrom],[accountIdTo],[currencyCodeFrom],[currencyCodeTo],[amountFrom],[amountTo],[exDiff],[fee],[createDateTime],[exRateWithDiff],[exRateWithoutDiff],[exRateFrom],[exSlopeFrom],[exInterceptFrom],[exRateTo],[exSlopeTo],[exInterceptTo],[feeRatio],[r8],[r7],[r1],[amountFromExchange],[feeRatioInExchange],[feeRatioOutExchange],[exRateInExchange],[exRateOutExchange],[memo],[handlerId]) VALUES (@transferCateId,@accountIdFrom,@accountIdTo,@currencyCodeFrom,@currencyCodeTo,@amountFrom,@amountTo,@exDiff,@fee,@createDateTime,@exRateWithDiff,@exRateWithoutDiff,@exRateFrom,@exSlopeFrom,@exInterceptFrom,@exRateTo,@exSlopeTo,@exInterceptTo,@feeRatio,@r8,@r7,@r1,@amountFromExchange,@feeRatioInExchange,@feeRatioOutExchange,@exRateInExchange,@exRateOutExchange,@memo,@handlerId);select cast(scope_identity() as int)";
+        string transDetailInsert = "INSERT INTO [dbo].[accountTransDetail]([transferCateId],[accountIdFrom],[accountIdTo],[currencyCodeFrom],[currencyCodeTo],[amountFrom],[amountTo],[exDiff],[fee],[createDateTime],[exRateWithDiff],[exRateWithoutDiff],[exRateFrom],[exSlopeFrom],[exInterceptFrom],[exRateTo],[exSlopeTo],[exInterceptTo],[feeRatio],[r8],[r7],[r1],[amountFromExchange],[feeRatioInExchange],[feeRatioOutExchange],[exRateInExchange],[exRateOutExchange],[memo],[handlerId],[handlerIp]) VALUES (@transferCateId,@accountIdFrom,@accountIdTo,@currencyCodeFrom,@currencyCodeTo,@amountFrom,@amountTo,@exDiff,@fee,@createDateTime,@exRateWithDiff,@exRateWithoutDiff,@exRateFrom,@exSlopeFrom,@exInterceptFrom,@exRateTo,@exSlopeTo,@exInterceptTo,@feeRatio,@r8,@r7,@r1,@amountFromExchange,@feeRatioInExchange,@feeRatioOutExchange,@exRateInExchange,@exRateOutExchange,@memo,@handlerId,@handlerIp);select cast(scope_identity() as int)";
 
         string transInsert = "INSERT INTO [dbo].[accountTrans]([detailId],[memberId],[memberLevelId],[memberParentId],[accountId],[transferCateId],[transferTypeId],[amountTypeId],[amount],[balanceBefore],[balanceAfter],[frozenBalanceBefore],[frozenBalanceAfter],[createDateTime],[l1],[l2],[l3],[l4],[l5],[l6],[l7],[l8],[l9]) VALUES (@detailId,@memberId,@memberLevelId,@memberParentId,@accountId,@transferCateId,@transferTypeId,@amountTypeId,@amount,@balanceBefore,@balanceAfter,@frozenBalanceBefore,@frozenBalanceAfter,@createDateTime,@l1,@l2,@l3,@l4,@l5,@l6,@l7,@l8,@l9)";
 
@@ -60,7 +60,7 @@ namespace WithDrawalOrderRequest
                     if (i.Count() > 0)
                     {
                         JObject request = new JObject();
-                        
+
                         JArray ja = JArray.FromObject(i.Select(x => new { withdrawalOrderId = x.id, memberId = x.memberId, bankAccountId = x.bankAccountIdTo, currencyCode = x.currencyCodeTo, amount = x.amountTo }));
 
                         JObject jo = JObject.FromObject(exRate);
@@ -163,7 +163,7 @@ namespace WithDrawalOrderRequest
                             {
                                 withdrawalStatus = Convert.ToString(item["status"]);
 
-                                if (withdrawalStatus == "failure")
+                                if (withdrawalStatus == "success")
                                 {
                                     int id = (int)item["withdrawalOrderId"];
 
@@ -175,7 +175,7 @@ namespace WithDrawalOrderRequest
                         }
                     }
 
-                    Thread.Sleep(10000);
+                    Thread.Sleep(20000);
                 }
             })
             { IsBackground = true }.Start();
@@ -187,9 +187,9 @@ namespace WithDrawalOrderRequest
 
             using (var ts = new TransactionScope())
             {
-                //try
-                //{
-                    int agentAccountId = GetAgentAccountId(wo.id);
+                try
+                {
+                    int agentAccountId = GetAgentAccountId(wo.accountIdFrom);
 
                     List<int> accountIds = new List<int> { agentAccountId, wo.accountIdFrom };
 
@@ -233,6 +233,8 @@ namespace WithDrawalOrderRequest
                             exRateInExchange = null,
                             exRateOutExchange = null,
                             memo = null,
+                            handlerId = wo.handlerId,
+                            handlerIp = wo.handlerIp
                         };
 
                         int transDetailId = conn.Query<int>(transDetailInsert, atd).FirstOrDefault();
@@ -279,7 +281,7 @@ namespace WithDrawalOrderRequest
                             memberLevelId = agentAccount.memberLevelId,
                             memberParentId = agentAccount.memberParentId,
                             accountId = agentAccount.id,
-                            transferCateId = "2", // ApiDeposit
+                            transferCateId = "4", // ExternalWithdrawal
                             transferTypeId = "2", // Withdrawal
                             amount = wo.amountFrom,
                             amountTypeId = "2", // FrozenBalance
@@ -310,7 +312,7 @@ namespace WithDrawalOrderRequest
                             memberParentId = memberAccount.memberParentId,
                             accountId = memberAccount.id,
                             transferCateId = "2", // ApiDeposit
-                            transferTypeId = "1", // Withdrawal
+                            transferTypeId = "1", // Deposit
                             amount = wo.amountFrom,
                             amountTypeId = "1", // NormalBalance
                             balanceBefore = memberAccount.balance,
@@ -399,6 +401,8 @@ namespace WithDrawalOrderRequest
                         exRateInExchange = wo.exRateInExchange,
                         exRateOutExchange = wo.exRateOutExchange,
                         memo = wo.memo,
+                        handlerId = wo.handlerId,
+                        handlerIp = wo.handlerIp,
                     };
 
                     int detailId = conn.Query<int>(transDetailInsert, atdWithdrawal).Single();
@@ -413,7 +417,7 @@ namespace WithDrawalOrderRequest
                         memberParentId = memberAccount.memberParentId,
                         accountId = memberAccount.id,
                         transferCateId = "4", // ExternalWithdrawal
-                        transferTypeId = "1", // Withdrawal
+                        transferTypeId = "2", // Withdrawal
                         amount = wo.amountFrom,
                         amountTypeId = "1", // NormalBalance
                         balanceBefore = memberAccount.balance,
@@ -434,20 +438,20 @@ namespace WithDrawalOrderRequest
 
                     conn.Execute(transInsert, memberBalanceWithDrawal);
 
-                    conn.Execute("update [bitject].[dbo].[withdrawalOrder] set status='3' where id=@id", new { id = wo.id });
+                    conn.Execute("update [bitject].[dbo].[withdrawalOrder] set status='3' , exchangeHandlingDateTime =@exchangeHandlingDateTime where id=@id", new { id = wo.id, exchangeHandlingDateTime =createDateTime});
 
                     ts.Complete();
-                //}
-                //catch (Exception ex)
-                //{
-                //    Dispatcher.Invoke(() => { textblock_msg.Text = ex.Message; });
-                //}
+            }
+                catch (Exception ex)
+            {
+                glbf.SetLog(ex.Message);
             }
         }
+        }
 
-        private int GetAgentAccountId(int memberId)
+        private int GetAgentAccountId(int memberAccountId)
         {
-            int agentAccountId = conn.Query<int>("select u.id from member t inner join account u on t.parentId = u.memberId where u.currencyCode='BJC' and t.id=@id ",new {id = memberId }).FirstOrDefault();
+            int agentAccountId = conn.Query<int>("select u.id from account t inner join account u on t.l7 = u.memberId where u.currencyCode='BJC' and t.id=@id ", new { id = memberAccountId }).FirstOrDefault();
             return agentAccountId;
         }
     }
