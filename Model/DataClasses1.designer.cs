@@ -7187,6 +7187,8 @@ namespace Model
 		
 		private System.Nullable<int> _l9;
 		
+		private string _importance;
+		
     #region 擴充性方法定義
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -7231,6 +7233,8 @@ namespace Model
     partial void Onl8Changed();
     partial void Onl9Changing(System.Nullable<int> value);
     partial void Onl9Changed();
+    partial void OnimportanceChanging(string value);
+    partial void OnimportanceChanged();
     #endregion
 		
 		public message()
@@ -7634,6 +7638,26 @@ namespace Model
 					this._l9 = value;
 					this.SendPropertyChanged("l9");
 					this.Onl9Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_importance", DbType="VarChar(5) NOT NULL", CanBeNull=false)]
+		public string importance
+		{
+			get
+			{
+				return this._importance;
+			}
+			set
+			{
+				if ((this._importance != value))
+				{
+					this.OnimportanceChanging(value);
+					this.SendPropertyChanging();
+					this._importance = value;
+					this.SendPropertyChanged("importance");
+					this.OnimportanceChanged();
 				}
 			}
 		}

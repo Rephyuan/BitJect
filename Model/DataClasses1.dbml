@@ -338,6 +338,7 @@
       <Column Name="l7" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="l8" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="l9" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="importance" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
